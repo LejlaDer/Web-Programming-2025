@@ -30,6 +30,14 @@
       <!-- Navbar Brand-->
       <a class="navbar-brand ps-3" href="index.html">Web Programming</a>
     </nav>
+
+    <!-- Add to index.html (for auth) --> 
+    <div id="login-section" class="container mt-3">
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
     <div id="layoutSidenav">
       <div id="layoutSidenav_nav">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -88,6 +96,28 @@
 
     <script>
       Utils.init_spapp();
+
+      // for auth
+      function login() {
+        fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem("token", data.token);
+        });
+    }
+
+    // Modify existing fetch calls:
+    fetch("/customers", {
+        headers: { "Authorization": localStorage.getItem("token") }
+    });
+    
     </script>
   </body>
 </html>

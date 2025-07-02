@@ -38,5 +38,10 @@ class ExamService {
          $examService = new ExamService();
         Flight::json($examService->foods_report());
     }
+
+    // for auth
+    public function get_user_by_email($email) {
+        return $this->dao->get_user_by_email($email);
+    }
 }
 ?>
